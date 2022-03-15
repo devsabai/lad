@@ -1,38 +1,63 @@
 const models = require('../models/index');
 const formidable = require('formidable');
-const path = require('path');
-const fs = require('fs-extra');
+const myFun = require('./function/myFunc');
 
 exports.index = async (req, res, next) => {
-    return res.status(200).json({
-        message: "success"
+    const { lang } = req.params
+    const _model = models.organization
+    const _field = ['id', [`content_${lang}`, 'content'], [`image_la`, 'image'], 'createdAt']
+    const _url = ""
+    await myFun.getData(lang, _model, _field, _url, res)
+}
+exports.insert = async(req, res, next) => {
+    const form = formidable.IncomingForm();
+    form.parse(req, async(error, fields, files) => {
+        const data_1 = {
+            content_la: fields.content_la,
+            image_la: fields.image_la,
+            content_en: fields.content_en,
+            image_en: fields.image_en,
+        }
+        const result = await myFun.insertData(models.organization, data_1)
+        _path = "/organization/"
+        _image_la = await myFun.uploadFile(files.image_la, result.image_la, result.id, _path, 'la')
+        _image_en = await myFun.uploadFile(files.image_en, result.image_en, result.id, _path, 'en')
+
+        const data_2 = {
+            image_la: _image_la,
+            image_en: _image_en,
+        }
+        await myFun.updateData(models.organization, result.id, data_2, res)
     })
 }
-// uploadFile = async (files, doc) => {
-//     if (files.file != null) {
-//         var fileExtension = files.file.name.split(".")[1];
-//         doc.file = `${doc.id}.${fileExtension}`;
-//         var newPath = path.resolve("public/uploads/") + "/" + doc.file;
-//         console.log(newPath);
+exports.update = async(req, res, next) => {
+    const { id } = req.params
+    const form = formidable.IncomingForm();
+    form.parse(req, async(error, fields, files) => {
+        const data_1 = {
+            content_la: fields.content_la,
+            image_la: fields.image_la,
+            content_en: fields.content_en,
+            image_en: fields.image_en,
+        }
+        const result = await myFun.updateData(models.organization, id, data_1)
+        _path = "/organization/"
+        _image_la = await myFun.uploadFile(files.image_la, result.image_la, id, _path, 'la')
+        _image_en = await myFun.uploadFile(files.image_en, result.image_en, id, _path, 'en')
 
-//         if (fs.exists(newPath)) {
-//             await fs.remove(newPath)
-//         }
-//         await fs.moveSync(files.file.path, newPath)
-
-//         // Update database
-//         let result = models.History.update(
-//             { image: doc.file },
-//             { where: { id: doc.id } }
-//         );
-//         return result;
-//     }
-// }
-exports.insert = async (req, res, next) => {
-
-
-    return res.status(200).json({
-        message: "success"
+        const data_2 = {
+            image_la: _image_la,
+            image_en: _image_en,
+        }
+        await myFun.updateData(models.organization, id, data_2, res)
     })
-
+}
+exports.destroy = async (req, res, next) => {
+    const { id } = req.params
+    await myFun.checkId(models.organization, id, res)
+    const result = await myFun.findData(models.organization, id)
+    _path = "public/uploads/organization/"
+    await myFun.destroyFile(_path, result.image_la)
+    await myFun.destroyFile(_path, result.image_en)
+    await myFun.destroyData(models.organization, id, res)
 }
