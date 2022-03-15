@@ -29,6 +29,9 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      status: {
+        type: Sequelize.INTEGER
+      },
       delete_at: {
         type: Sequelize.DATE
       },

@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     content_en: DataTypes.TEXT,
     cover: DataTypes.STRING,
     image: DataTypes.STRING,
+    status: DataTypes.INTEGER,
     delete_at: DataTypes.DATE
   }, { tableName: 'news' });
   news.associate = function(models) {

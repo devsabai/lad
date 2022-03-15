@@ -33,6 +33,7 @@ exports.insert = async(req, res, next) => {
 }
 exports.update = async(req, res, next) => {
     const { id } = req.params
+    await myFun.checkId(models.organization, id, res)
     const form = formidable.IncomingForm();
     form.parse(req, async(error, fields, files) => {
         const data_1 = {

@@ -1,11 +1,13 @@
 const path = require('path');
 const fs = require('fs-extra');
+const myFunc = require('./myFunc')
 
-exports.getData = async (lang, model, _field, _url, res) => {
+exports.getData = async (lang, model, _field, _url, res, where) => {
     if (lang == 'la') {
         const result = await model.findAll({
             attributes: _field,
-            logging: false
+            logging: false,
+            where: where
         })
         return res.status(200).json({
             url: _url,
@@ -14,7 +16,8 @@ exports.getData = async (lang, model, _field, _url, res) => {
     } else if (lang == 'en') {
         const result = await model.findAll({
             attributes: _field,
-            logging: false
+            logging: false,
+            where: where
         })
         return res.status(200).json({
             url: _url,
@@ -56,7 +59,7 @@ exports.findData = async (model, id) => {
 
 exports.uploadFile = async (files, doc, doc_id, path_, lang) => {
     if (files != null) {
-        let fileExtension = files.type.split("/")[1];
+        let fileExtension = files.name.split(".")[1];
         doc = `${doc_id}_${lang}.${fileExtension}`;
         let newPath = path.resolve("public/uploads") + path_ + "/" + doc;
         if (fs.exists(newPath)) {
@@ -69,4 +72,13 @@ exports.uploadFile = async (files, doc, doc_id, path_, lang) => {
 exports.destroyFile = async (path, img) => {
     let result = await fs.remove(path + img)
     return result
+}
+exports.checkPublish = async (model, status, id, dataPublish, dataUnPublish, res) => {
+ 
+    if(status == 'publish') {
+        await myFunc.updateData(model, id, dataPublish, res)
+    } else if(status == 'unpublish'){
+        await myFunc.updateData(model, id, dataUnPublish, res)
+    }
+    return res.status(404).json({ message: "url ບໍ່ຖືກຕ້ອງ" })
 }
