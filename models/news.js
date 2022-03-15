@@ -1,17 +1,17 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const history = sequelize.define('history', {
+  const news = sequelize.define('news', {
     no: DataTypes.INTEGER,
     topic_la: DataTypes.TEXT,
-    topic_en: DataTypes.TEXT,
     content_la: DataTypes.TEXT,
+    topic_en: DataTypes.TEXT,
     content_en: DataTypes.TEXT,
-    image_la: DataTypes.STRING,
-    image_en: DataTypes.STRING,
+    cover: DataTypes.STRING,
+    image: DataTypes.STRING,
     delete_at: DataTypes.DATE
-  }, { tableName: 'histories' });
-  history.associate = function(models) {
+  }, { tableName: 'news' });
+  news.associate = function(models) {
     // associations can be defined here
   };
-  return history;
+  return news;
 };

@@ -5,8 +5,8 @@ const myFun = require('./function/myFunc');
 exports.index = async (req, res, next) => {
     const { lang } = req.params
     const _model = models.history
-    const _field = ['id', [`topic_${lang}`, 'topic'], [`content_${lang}`, 'content'], [`image_${lang}`, 'image']]
-    const _url = "www.lad.la/"
+    const _field = [`id`, [`topic_${lang}`, `topic`], [`content_${lang}`, `content`], [`image_${lang}`, `image`], `createdAt`]
+    const _url = ""
     await myFun.getData(lang, _model, _field, _url, res)
 }
 

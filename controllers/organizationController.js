@@ -5,7 +5,7 @@ const myFun = require('./function/myFunc');
 exports.index = async (req, res, next) => {
     const { lang } = req.params
     const _model = models.organization
-    const _field = ['id', [`content_${lang}`, 'content'], [`image_la`, 'image'], 'createdAt']
+    const _field = [`id`, [`content_${lang}`, `content`], [`image_la`, `image`], `createdAt`]
     const _url = ""
     await myFun.getData(lang, _model, _field, _url, res)
 }
@@ -13,6 +13,7 @@ exports.insert = async(req, res, next) => {
     const form = formidable.IncomingForm();
     form.parse(req, async(error, fields, files) => {
         const data_1 = {
+            no: fields.no,
             content_la: fields.content_la,
             image_la: fields.image_la,
             content_en: fields.content_en,
@@ -35,6 +36,7 @@ exports.update = async(req, res, next) => {
     const form = formidable.IncomingForm();
     form.parse(req, async(error, fields, files) => {
         const data_1 = {
+            no: fields.no,
             content_la: fields.content_la,
             image_la: fields.image_la,
             content_en: fields.content_en,

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     image_la: DataTypes.STRING,
     image_en: DataTypes.STRING,
     delete_at: DataTypes.DATE
-  }, {});
+  }, { tableName: 'organizations' });
   organization.associate = function(models) {
     // associations can be defined here
   };

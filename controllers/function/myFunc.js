@@ -56,9 +56,9 @@ exports.findData = async (model, id) => {
 
 exports.uploadFile = async (files, doc, doc_id, path_, lang) => {
     if (files != null) {
-        var fileExtension = files.name.split(".")[1];
+        let fileExtension = files.type.split("/")[1];
         doc = `${doc_id}_${lang}.${fileExtension}`;
-        var newPath = path.resolve("public/uploads") + path_ + "/" + doc;
+        let newPath = path.resolve("public/uploads") + path_ + "/" + doc;
         if (fs.exists(newPath)) {
             await fs.remove(newPath)
         }
