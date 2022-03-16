@@ -14,11 +14,11 @@ module.exports = {
       content_la: {
         type: Sequelize.TEXT
       },
-      content_en: {
-        type: Sequelize.TEXT
-      },
       image_la: {
         type: Sequelize.STRING
+      },
+      content_en: {
+        type: Sequelize.TEXT
       },
       image_en: {
         type: Sequelize.STRING

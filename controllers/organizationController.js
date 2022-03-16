@@ -2,13 +2,33 @@ const models = require('../models/index');
 const formidable = require('formidable');
 const myFun = require('./function/myFunc');
 
+const _model = models.organization
+const _url = ""
+const _orderBy = [['id', 'desc']]
+
 exports.index = async (req, res, next) => {
     const { lang } = req.params
-    const _model = models.organization
-    const _field = [`id`, [`content_${lang}`, `content`], [`image_la`, `image`], `createdAt`]
-    const _url = ""
-    await myFun.getData(lang, _model, _field, _url, res)
+    const _field = [`id`, [`content_${lang}`, `content`], [`image_${lang}`, `image`], `createdAt`]
+    await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy)
 }
+exports.show = async (req, res, next) => {
+    const { id, lang } = req.params
+    const _field = [`id`, [`content_${lang}`, `content`], [`image_${lang}`, `image`], `createdAt`]
+    const _where = { id : id }
+    await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy, _where)   
+}
+exports.getAllData = async (req, res, next) => {
+
+    const _field = [`id`, `content_la`, `image_la`, `content_en`, `image_en`, `createdAt`]
+    await myFun.getDataLang(_model, _field, _url, res, 'all', _orderBy)
+}
+exports.getOneData = async (req, res, next) => {
+    const { id } = req.params
+    const _field = [`id`, `content_la`, `image_la`, `content_en`, `image_en`, `createdAt`]
+    const _where = { id : id }
+    await myFun.getDataLang(_model, _field, _url, res, 'all', _orderBy, _where)
+}
+
 exports.insert = async(req, res, next) => {
     const form = formidable.IncomingForm();
     form.parse(req, async(error, fields, files) => {
@@ -52,15 +72,14 @@ exports.update = async(req, res, next) => {
             image_la: _image_la,
             image_en: _image_en,
         }
-        await myFun.updateData(models.organization, id, data_2, res)
+        await myFun.updateData(models.organization, id, data_2, res, 'return')
     })
 }
 exports.destroy = async (req, res, next) => {
     const { id } = req.params
-    await myFun.checkId(models.organization, id, res)
-    const result = await myFun.findData(models.organization, id)
+    const result = await myFun.checkId(models.organization, id, res)
     _path = "public/uploads/organization/"
     await myFun.destroyFile(_path, result.image_la)
     await myFun.destroyFile(_path, result.image_en)
-    await myFun.destroyData(models.organization, id, res)
+    await myFun.destroyData(models.organization, id, res, 'return')
 }
