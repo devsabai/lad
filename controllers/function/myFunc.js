@@ -71,7 +71,7 @@ exports.checkId = async (model, id, res) => {
 
 exports.uploadFile = async (files, doc, doc_id, path_, lang) => {
     if (files != null) {
-        let fileExtension = files.name.split(".")[1];
+        let fileExtension = files.type.split("/")[1];
         doc = `${doc_id}_${lang}.${fileExtension}`;
         let newPath = path.resolve("public/uploads") + path_ + "/" + doc;
         if (fs.existsSync(newPath)) {
