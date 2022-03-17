@@ -6,13 +6,7 @@ const _model = models.news
 const _url = ""
 const _orderBy = [['id', 'desc']]
 
-exports.index = async (req, res, next) => {
-
-    const { lang } = req.params
-    const _field = [`id`, [`topic_${lang}`, `topic`], [`content_${lang}`, `content`], `cover`, `image`, `createdAt`]
-    await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy)
-
-}
+// client
 
 exports.getPublish = async (req, res, next) => {
 
@@ -22,6 +16,27 @@ exports.getPublish = async (req, res, next) => {
     await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy, _where)
 
 }
+
+exports.index = async (req, res, next) => {
+
+    const { lang } = req.params
+    const _field = [`id`, [`topic_${lang}`, `topic`], [`content_${lang}`, `content`], `cover`, `image`, `createdAt`]
+    await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy)
+
+}
+
+exports.show = async (req, res, next) => {
+
+    const { id, lang } = req.params
+    const _field = [`id`, [`topic_${lang}`, `topic`], [`content_${lang}`, `content`], `cover`, `image`, `createdAt`]
+    const _where = { id : id }
+    await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy, _where)  
+
+}
+
+// clientX
+
+// admin
 
 exports.getAllData = async (req, res, next) => {
 
@@ -39,14 +54,6 @@ exports.getOneData = async (req, res, next) => {
 
 }
 
-exports.show = async (req, res, next) => {
-
-    const { id, lang } = req.params
-    const _field = [`id`, [`topic_${lang}`, `topic`], [`content_${lang}`, `content`], `cover`, `image`, `createdAt`]
-    const _where = { id : id }
-    await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy, _where)  
-
-}
 
 exports.insert = async (req, res, next) => {
 
@@ -71,7 +78,7 @@ exports.insert = async (req, res, next) => {
             cover: _cover,
             image: _image,
         }
-        await myFun.updateData(_model, result.id, data_2, res)
+        await myFun.updateData(_model, result.id, data_2, res, 'return')
     })
 }
 
@@ -123,3 +130,5 @@ exports.publish = async (req, res, next) => {
     await myFun.publish(_model, status, id, dataPublish, dataUnPublish, res)
 
 }
+
+// admin

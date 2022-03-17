@@ -6,6 +6,8 @@ const _model = models.organization
 const _url = ""
 const _orderBy = [['id', 'desc']]
 
+// client 
+
 exports.index = async (req, res, next) => {
     const { lang } = req.params
     const _field = [`id`, [`content_${lang}`, `content`], [`image_${lang}`, `image`], `createdAt`]
@@ -17,6 +19,11 @@ exports.show = async (req, res, next) => {
     const _where = { id : id }
     await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy, _where)   
 }
+
+// client
+
+// admin
+
 exports.getAllData = async (req, res, next) => {
 
     const _field = [`id`, `content_la`, `image_la`, `content_en`, `image_en`, `createdAt`]
@@ -48,7 +55,7 @@ exports.insert = async(req, res, next) => {
             image_la: _image_la,
             image_en: _image_en,
         }
-        await myFun.updateData(models.organization, result.id, data_2, res)
+        await myFun.updateData(models.organization, result.id, data_2, res, 'return')
     })
 }
 exports.update = async(req, res, next) => {
@@ -83,3 +90,5 @@ exports.destroy = async (req, res, next) => {
     await myFun.destroyFile(_path, result.image_en)
     await myFun.destroyData(models.organization, id, res, 'return')
 }
+
+// admin

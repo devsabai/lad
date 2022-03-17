@@ -6,6 +6,8 @@ const _model = models.history
 const _url = ""
 const _orderBy = [['id', 'desc']]
 
+// client
+
 exports.index = async (req, res, next) => {
 
     const { lang } = req.params
@@ -22,6 +24,10 @@ exports.show = async (req, res, next) => {
     await myFun.getDataLang(_model, _field, _url, res, lang, _orderBy, _where)
 
 }
+
+// client
+
+// admin
 
 exports.getAllData = async (req, res, next) => {
 
@@ -62,7 +68,7 @@ exports.insert = async (req, res, next) => {
             image_la: _image_la,
             image_en: _image_en,
         }
-        await myFun.updateData(_model, result.id, data_2, res)
+        await myFun.updateData(_model, result.id, data_2, res, 'return')
     })
 }
 
@@ -104,6 +110,8 @@ exports.destroy = async (req, res, next) => {
     await myFun.destroyData(_model, id, res, 'return')
 
 }
+
+// admin
 
 
 

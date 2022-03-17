@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 
+
 exports.getDataLang = async (model, _field, _url, res, lang, _orderBy, _where) => {
     if (lang == 'all') {
         const result = await model.findAll({
@@ -70,8 +71,8 @@ exports.checkId = async (model, id, res) => {
 }
 
 exports.uploadFile = async (files, doc, doc_id, path_, lang) => {
-    if (files != null) {
-        let fileExtension = files.name.split(".")[1];
+    if (files.size != 0) {
+        let fileExtension = files.type.split("/")[1];
         doc = `${doc_id}_${lang}.${fileExtension}`;
         let newPath = path.resolve("public/uploads") + path_ + "/" + doc;
         if (fs.existsSync(newPath)) {
@@ -80,6 +81,7 @@ exports.uploadFile = async (files, doc, doc_id, path_, lang) => {
         await fs.moveSync(files.path, newPath)
         return doc;
     }
+    return null
 }
 exports.destroyFile = async (path, img) => {
     let result = await fs.remove(path + img)
